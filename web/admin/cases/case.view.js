@@ -11,6 +11,7 @@ require(requiredModules, function(settings, utils, CaseModel) {
     function handleCaseLoaded() {
         $("#case-title").text(caseInfo.title);
         $("#case-description").html(caseInfo.description);
+        $("#case-options-delete").prop("href", settings.deleteCaseUrl + caseInfo.caseId);
         
         var specialities = $("#case-specialities");
         

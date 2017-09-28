@@ -3,14 +3,30 @@
 <h1>Viewing Case: <span id="case-title"></span></h1>
 
 <div id="case-info-container" class="panel panel-default">
+    
+    <div class="panel-heading">
+        <ul class="nav nav-pills">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  Options <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a id="case-options-delete" href="#">Delete</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
     <div class="panel-body">
         <div class="col-md-12">
             
-            <ul class="list-unstyled">
-                <li>
-                    <strong class="col-md-2">Description:</strong>
-                    <div id="case-description" class="col-md-10"></div>
-                </li>
+            <div class="clearfix">
+                <strong class="col-md-2">Description:</strong>
+                <div id="case-description" class="col-md-10"></div>
+            </div>
+            
+            <ul class="list-unstyled clearfix">
+               
                 <li>
                     <strong class="col-md-2">Specialities:</strong>
                     <div class="col-md-10">
@@ -23,7 +39,7 @@
                         <span id="case-complexity" class="label"></span>
                     </div>
                 </li>
-                <li>
+                <li class="clearfix">
                     <strong class="col-md-2">Video URL:</strong>
                     <div class="col-md-10">
                         <iframe id="case-video-embed" src="" style="display:none;" width="640" height="338" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>

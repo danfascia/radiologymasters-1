@@ -145,6 +145,10 @@ select {
     border-radius: 4px;
 }
 
+#trumbowyg-icons {
+    display: none;
+}
+
 
 /**JQUERY SELECT2 STYLE OVERRIDE**/
 .select2-container {
