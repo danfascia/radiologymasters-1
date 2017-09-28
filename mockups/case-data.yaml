@@ -1,0 +1,52 @@
+video:
+  id: string
+
+restriction:
+  type: string
+  input: select
+  multiple: false
+    values: free, restricted
+    capability: 
+      type: string
+      input: select
+      capabilities: "premium", "course_name", "membership_level"
+
+course:
+
+permalink:
+  type: string
+  input: text
+  validation: only allow letters, numbers and -
+
+date:
+  type: datetime
+  input: timestamp from upload
+
+title:
+  type: string
+  input: text
+  
+excerpt:
+  type: string(160)
+  input: textarea
+  comment: Populates the meta description
+
+description:
+  type: string
+  input: richtext
+
+author:
+  type: string (concat author_firstname + author_lastname)
+  input: lookup based on upload time ID
+
+speciality:
+  type: string
+  input: select
+    multiple: true
+    values: "Gastrointestinal", "Musculoskeletal", "Breast", "Chest", "Cardiovascular", "Paediatric", "Neuro, Head & Neck", "Genitourinary", "Exam Tips"
+    
+complexity:
+   type: string
+   input: select
+   multiple: false
+   values: "Easy", "Medium", "Hard"
