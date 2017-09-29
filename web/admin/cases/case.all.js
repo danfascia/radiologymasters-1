@@ -1,4 +1,4 @@
-require(["settings", "dynatable", "loading"], function(settings, dynatable) {
+require(["settings", "dynatable", "jquery", "loading"], function(settings, dynatable, $) {
     
     var container = $("#case-info-container");
     var _table = $("#cases-table");

@@ -1,6 +1,6 @@
-var requiredModules = ["settings", "utils", "CaseModel", "loading"];
+var requiredModules = ["settings", "utils", "CaseModel", "jquery", "loading"];
 
-require(requiredModules, function(settings, utils, CaseModel) {
+require(requiredModules, function(settings, utils, CaseModel, $) {
 
     var caseId = utils.getRouteParamValue(window.location.href);
     var caseInfoPanel = $("#case-info-container");

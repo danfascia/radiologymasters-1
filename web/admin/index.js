@@ -26,8 +26,8 @@ requirejs.config({
         select2: "/node_modules/select2/dist/js/select2.min",
         timeago: "/node_modules/timeago/jquery.timeago",
         // INTERNAL
-        settings: '/admin/js/settings',
-        firebaseConfig: '/admin/js/firebase.config',
+        settings: '/settings',
+        firebaseConfig: '/settings.firebase',
         utils: '/admin/js/utils',
         loading: "/admin/js/plugins/loading",
         CaseModel: "/admin/cases/case.model",
