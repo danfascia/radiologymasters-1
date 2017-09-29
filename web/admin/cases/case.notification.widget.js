@@ -22,9 +22,11 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
                         li.append(time);
                     }
                     
-                    var a = $("<a/>", { "class": "pull-right", "href": settings.viewCaseUrl + notification.caseId, text: "View", });
+                    if (notification.type && notification.type == "create" && !isCaseDeleted(notifications, notification.caseId)) {
+                        var a = $("<a/>", { "class": "pull-right", "href": settings.viewCaseUrl + notification.caseId, text: "View", });
+                        li.append(a);
+                    }
                     
-                    li.append(a);
                     listGroup.append(li);
                 }
                 
@@ -34,6 +36,21 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
             });
             
             return promise;
+        }
+        
+        function isCaseDeleted(notifications, caseId) {
+            for (var i = 0; i < notifications.length; i++) {
+                var notification = notifications[i];
+                
+                if (notification.caseId == caseId &&
+                    notifications[i].type &&
+                    notification.type == "delete") {
+                        
+                    return true;
+                }
+            }
+        
+            return false;
         }
         
         function _setup(callback) {

@@ -96,6 +96,7 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
                         var notification = new CaseNotification();
                         notification.caseId = self.caseId;
                         notification.caseTitle = self.title;
+                        notification.type = "create";
                         notification.message = "A new case '{title}' was added by {author}".format({ title: self.title, author: self.createdByUserFullName });
                         notification.createdByUserId = self.createdByUserId;
                         notification.createdByUserFullName = self.createdByUserFullName;
@@ -133,6 +134,7 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
                         var notification = new CaseNotification();
                         notification.caseId = self.caseId;
                         notification.caseTitle = self.title;
+                        notification.type = "delete";
                         notification.message = "The case '{title}' was deleted by {author}".format({ title: self.title, author: user.displayName });
                         notification.createdByUserId = user.uid;
                         notification.createdByUserFullName = user.displayName;

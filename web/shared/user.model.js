@@ -1,11 +1,11 @@
 define("UserModel", ["utils"], function(utils) {
 
     function User() {
-        this.userId = utils.guid(),
-            this.firstName = "",
-            this.lastName = "",
-            this.email = "",
-            this.signupTimestamp = new Date().getTime();
+        this.userId = utils.guid();
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.signupTimestamp = new Date().getTime();
         this.isEnabled = true;
         this.isAdmin = false;
 

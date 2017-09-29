@@ -26,15 +26,15 @@ requirejs.config({
         select2: "/node_modules/select2/dist/js/select2.min",
         timeago: "/node_modules/timeago/jquery.timeago",
         // INTERNAL
-        settings: '/settings',
-        firebaseConfig: '/settings.firebase',
-        utils: '/admin/js/utils',
+        settings: '/shared/settings',
+        firebaseConfig: '/shared/settings.firebase',
+        utils: '/shared/utils',
         loading: "/admin/js/plugins/loading",
         CaseModel: "/admin/cases/case.model",
         CaseNotificationModel: "/admin/cases/case.notification.model",
         CaseMarkdownTemplateModel: "/admin/cases/case.markdown.template",
         CaseNotificationWidget: "/admin/cases/case.notification.widget",
-        UserModel: "/admin/account/user.model",
+        UserModel: "/shared/user.model",
         VideoModel: "/admin/cases/video.model"
     }
 });

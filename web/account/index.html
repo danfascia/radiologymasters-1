@@ -20,14 +20,14 @@
 
     <h1 id="logo" class="white center">
         <img src="/admin/img/logo-48.png"> Radiology Masters
-        <span class="strapline">Admin</span>
+        <span class="strapline">Account</span>
     </h1>
 
     <section id="autharea">
 
         <ul class="tabs">
-            <li class="tab-link current" data-tab="tab-1">Sign In</li>
-            <li class="tab-link" data-tab="tab-2">Register (free)</li>
+            <li id="signin-tab" class="tab-link current" data-tab="tab-1">Sign In</li>
+            <li id="signup-tab" class="tab-link" data-tab="tab-2">Register (free)</li>
         </ul>
 
         <div id="tab-1" class="tab-content current">
@@ -70,7 +70,7 @@
 </body>
 
 <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
-<script src="/settings.firebase.js"></script>
+<script src="/shared/settings.firebase.js"></script>
 <script src="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js"></script>
 <script src="/node_modules/requirejs/require.js"></script>
 <script src="index.js"></script>

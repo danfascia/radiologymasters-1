@@ -1,17 +1,18 @@
-define("LoginView", ["jquery", "settings", "UserModel", "validate"], function($, settings, User) {
+define("LoginView", ["jquery", "settings", "utils", "UserModel", "validate"], function($, settings, utils, User) {
     
     function authenticate(userInfo) {
         
-        firebase.auth().signInWithEmailAndPassword(userInfo.email, userInfo.password)
-        .then(function(user) {
-            window.location.replace(settings.homeUrl);        
-        })
-        .catch(function(error) {
-            var errorMessage = error.message;
-            
-            $("#login-error").text(errorMessage).show();
-        });
-    };
+        firebase.auth()
+            .signInWithEmailAndPassword(userInfo.email, userInfo.password)
+            .then(function(user) {
+                window.location.replace(settings.homeUrl);        
+            })
+            .catch(function(error) {
+                var errorMessage = error.message;
+                
+                $("#login-error").text(errorMessage).show();
+            });
+    }
     
     $("form[name='login']").validate({
         rules: {

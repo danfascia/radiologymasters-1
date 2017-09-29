@@ -1,9 +1,9 @@
 define("settings", function() {  
     return {
-        homeUrl: "/admin/#/",
-        loginUrl: "/admin/account",
+        homeUrl: "/app",
+        loginUrl: "/account",
         unauthorizedUrl: "/admin/unauthorized.html",
-        signupOAuthUrl: "/admin/account/oauth-signup.html",
+        signupOAuthUrl: "/account/oauth-signup.html",
         viewCaseUrl: "/admin/#/cases/view/",
         deleteCaseUrl: "/admin/#/cases/delete/",
         
@@ -12,7 +12,7 @@ define("settings", function() {
         // The Vimeo access token must have the delete, create and upload scopes.
         vimeoAccessToken: "b45a33ccf5a92da4f05da80e77c531f8",
         
-        gitHubAccessToken: "cefc0a991814a65a2f49ea51ebca3c590452a3a1",
+        gitHubAccessToken: "db8bc433f8ffdf3123a6268acc84204958f8700a",
         gitHubUsername: "radiologymasters",
         gitHubRepositoryName: "radiologymasters",
         gitHubBranch: "master",

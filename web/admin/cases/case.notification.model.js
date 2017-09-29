@@ -5,6 +5,7 @@ define("CaseNotificationModel", ["utils"], function(utils) {
         this.caseNotificationId = caseNotificationId || utils.guid();
         this.caseId = "";
         this.caseTitle = "";
+        this.type = "";
         this.message = "";
         this.createdByUserId = "";
         this.createdByUserFullName = "";
@@ -52,6 +53,7 @@ define("CaseNotificationModel", ["utils"], function(utils) {
                 var notification = {
                     caseNotificationId: self.caseNotificationId,
                     caseId: self.caseId,
+                    type: self.type,
                     caseTitle: self.caseTitle,
                     message: self.message,
                     createdByUserId: self.createdByUserId,
