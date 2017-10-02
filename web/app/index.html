@@ -58,20 +58,22 @@
     <main role="main">
      <div class="container row">
         <article class="col">
-            <!-- if user logged in and has permission -->
-            <video>
-                Video player embeds here
-            </video>
-            <!-- // if user logged in and has permission -->
-            
+
+            <div class="video">
+                <iframe src="https://player.vimeo.com/video/76979871" width="530" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+
             <h2 id="video-title">Anterior mediastinal masses</h2>
             <p>
                 Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Donec rutrum congue leo eget malesuada. Curabitur aliquet quam id dui posuere blandit. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Donec sollicitudin molestie malesuada. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
             </p>  
         </article>
 
-        <aside class="col">
+        <aside class="col" style="height:250px">
             Sidebar
+            <div>
+                <a id="case-video-done" style="display:none;">Mark as done</a>
+            </div>
         </aside>
      </div>
     </main>
@@ -99,7 +101,42 @@
 	<script src="/shared/settings.firebase.js"></script>
 	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="js/plugins/display.name.plugin.js"></script>
+	<script src="js/plugins/case.complete/case.complete.js"></script>
     <script src="js/index.js"></script>
     <script src="js/auth.js"></script>
+  
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    
+    <style>
+        /** MARK AS DONE BUTTON STYLES **/    
+        .complete {
+            background-color: #2cbe4e;
+            display: inline-block;
+            padding: 4px 8px;
+            font-weight: 600;
+            line-height: 20px;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+        }
+        
+        .incomplete {
+            background-color: #0077CC;
+            display: inline-block;
+            padding: 4px 8px;
+            font-weight: 600;
+            line-height: 20px;
+            color: #fff;
+            text-align: center;
+            border-radius: 3px;
+        }
+        
+        .complete:hover, 
+        .incomplete:hover {
+            color: #fff;
+        }
+        
+    </style>
+    
 </body>
 </html>

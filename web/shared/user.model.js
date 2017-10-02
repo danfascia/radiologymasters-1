@@ -8,6 +8,7 @@ define("UserModel", ["utils"], function(utils) {
         this.signupTimestamp = new Date().getTime();
         this.isEnabled = true;
         this.isAdmin = false;
+        this.completedCases = [];
 
         var self = this;
 
@@ -35,7 +36,8 @@ define("UserModel", ["utils"], function(utils) {
                 email: self.email,
                 signupTimestamp: self.signupTimestamp,
                 isEnabled: self.isEnabled,
-                isAdmin: self.isAdmin
+                isAdmin: self.isAdmin,
+                completedCases: self.completedCases
             });
         }
 
@@ -68,6 +70,7 @@ define("UserModel", ["utils"], function(utils) {
                         self.isAdmin = userInfo.val().isAdmin;
                         self.isEnabled = userInfo.val().isEnabled;
                         self.signupTimestamp = userInfo.val().signupTimestamp;
+                        self.completedCases = userInfo.val().completedCases || [];
 
                         resolve();
                     });

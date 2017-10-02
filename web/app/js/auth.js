@@ -29,6 +29,7 @@ function User() {
     this.email = "";
     this.signupDate;
     this.isEnabled = false;
+    this.completedCases = [];
     
     var self = this;
     
@@ -49,9 +50,40 @@ function User() {
                     self.isAdmin = userInfo.val().isAdmin;
                     self.isEnabled = userInfo.val().isEnabled;
                     self.signupTimestamp = new Date(userInfo.val().signupTimestamp);
+                    self.completedCases = userInfo.val().completedCases || [];
                     
                     resolve();
                 });
+        });
+        
+        return promise;
+    };
+    
+    this.hasCompletedCase = function (caseId) {
+        if (!self.completedCases) {
+            return false;
+        }
+
+        return self.completedCases.indexOf(caseId) > -1;
+    };
+    
+    this.markCaseAsComplete = function (firebase, caseId) {
+        
+        var promise = new Promise(function(resolve, reject) {
+            if (self.completedCases.indexOf(caseId) > -1) {
+                resolve();
+                return;
+            }
+            
+            self.completedCases.push(caseId);
+            
+            firebase.database()
+                .ref("users/" + self.userId)
+                .set({
+                    completedCases: self.completedCases
+                })
+                .then(resolve)
+                .catch(reject);
         });
         
         return promise;

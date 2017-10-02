@@ -458,3 +458,9 @@ a.button:hover {
     overflow: hidden; }
   figure img {
     border: 1px solid #000; } }
+    
+  .video {
+    background-color: #2b2b2f;
+    width: 100%;
+    padding: 10px;
+  }
