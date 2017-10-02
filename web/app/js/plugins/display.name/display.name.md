@@ -1,6 +1,6 @@
 # DisplayName Plugin
 
-The display name plugin is used to either:
+The display name plugin is a jQuery plugin used to either:
 Display either the sign-in and sign-up links to the user if they are unauthenticated 
 Or display the profile and sign-out links if the user is authenticated.
 
