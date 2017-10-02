@@ -8,12 +8,12 @@ Or display the profile and sign-out links if the user is authenticated.
 
 Example:
 ```
- $("#SomeContainerElementId").displayName({
-	 profileLinkText: "Welcome back, {displayName}",
-     containers: {
-         authenticated: ".authenticated",
-         unauthenticated: ".unauthenticated"
-     }
+ $("#SomeContainerElementId").displayName({ 
+	profileLinkText: "Welcome back, {displayName}",
+	containers: {
+		authenticated: ".authenticated",
+		unauthenticated: ".unauthenticated"
+	}
  });
 ```
 
