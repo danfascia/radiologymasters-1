@@ -28,8 +28,8 @@ define("SignupOAuthView", ["jquery", "settings", "UserModel"], function($, setti
 
                     $("#account-creation-message").text("Please wait while we finish setting up your account.");
 
-                    user.firstName = nameParts[0];
-                    user.lastName = nameParts[1];
+                    user.firstName = nameParts[0] || "";
+                    user.lastName = nameParts[1] || "";
                     user.email = firebaseUser.email;
                     user.isAdmin = true;
 

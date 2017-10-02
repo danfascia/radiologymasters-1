@@ -78,10 +78,8 @@ function User() {
             self.completedCases.push(caseId);
             
             firebase.database()
-                .ref("users/" + self.userId)
-                .set({
-                    completedCases: self.completedCases
-                })
+                .ref("users/" + self.userId + "/completedCases")
+                .set(self.completedCases)
                 .then(resolve)
                 .catch(reject);
         });

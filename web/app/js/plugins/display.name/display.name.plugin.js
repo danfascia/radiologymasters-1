@@ -24,6 +24,9 @@ $.fn.displayName = function(options) {
 
     var update = function(isAuthenticated, user) {
         if (isAuthenticated) {
+            
+            console.log("USER", user);
+            
             authenticatedContainer
                 .find(".profile")
                 .text(settings.profileLinkText.format(user));
