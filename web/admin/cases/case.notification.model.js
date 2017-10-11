@@ -34,7 +34,8 @@ define("CaseNotificationModel", ["utils"], function(utils) {
                                 message: caseNotification.val().message,
                                 createdByUserId: caseNotification.val().createdByUserId,
                                 createdByUserFullName: caseNotification.val().createdByUserFullName,
-                                createdTimestamp: new Date(caseNotification.val().createdTimestamp)
+                                createdTimestamp: new Date(caseNotification.val().createdTimestamp),
+                                type: caseNotification.val().type
                             };
                             notifications.push(notification);
                         });

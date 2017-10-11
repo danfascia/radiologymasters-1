@@ -11,9 +11,24 @@ $(function () {
     });
     
     player.on('ended', function() {
-        console.log('Video end...');
+        console.log('Video ended.');
         $(document).trigger("case-completed");
     });
 
-    $("#case-video-done").markComplete({ caseId: 13 });
+    var caseId = "";
+    var speciality = "Musculoskeletal";
+
+    $("#case-video-done").markComplete({ 
+        "caseId": caseId
+    });
+    
+    $(".related-cases").relatedCases({ 
+        "caseId": caseId,
+        "speciality": speciality
+    });
+    
+    $(".related-cases").updateStats({ 
+        "caseId": caseId,
+        "speciality": speciality
+    });
 });

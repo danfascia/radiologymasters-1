@@ -67,6 +67,18 @@
             <p>
                 Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Donec rutrum congue leo eget malesuada. Curabitur aliquet quam id dui posuere blandit. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Donec sollicitudin molestie malesuada. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
             </p>  
+            
+            <div class="related-cases">
+                
+                <h2>Related Cases</h2>
+                
+                <div class="table">
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div>
+            
         </article>
 
         <aside class="col" style="height:250px">
@@ -102,6 +114,8 @@
 	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="js/plugins/display.name/display.name.plugin.js"></script>
 	<script src="js/plugins/case.complete/case.complete.js"></script>
+	<script src="js/plugins/case.related/case.related.js"></script>
+	<script src="js/plugins/case.stats/case.stats.js"></script>
     <script src="js/index.js"></script>
     <script src="js/auth.js"></script>
   
@@ -135,7 +149,48 @@
         .incomplete:hover {
             color: #fff;
         }
+    
+    </style>
+    
+    <style>
         
+        /** RELATED CASE STYLES **/
+        .related-cases {
+        	background: url(images/bar-bg.jpg) repeat-x;
+        }
+        
+        .related-cases .table {
+        	display: table;
+    	    margin: 0px 10px 10px 10px;
+        }
+        
+        .related-cases ul {
+    	    min-width: 696px;
+    	    list-style: none;
+    	    padding: 0;
+    	    margin: 0;
+    	}
+    	
+    	.case {
+    	    width: 20%;
+            display: block;
+            float: left;
+            padding: 10px;
+    	}
+    	
+    	.case img {
+    	    width: 100%;
+    	}
+    	
+    	.case h4 {
+    	    font-size: 14px;
+    	}
+    	
+    	.case .inner {
+    	    background: lightgray;
+    	    padding: 10px;
+    	}
+    	
     </style>
     
 </body>

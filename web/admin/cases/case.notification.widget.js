@@ -22,6 +22,8 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
                         li.append(time);
                     }
                     
+                    console.log("Notification", notification);
+                    
                     if (notification.type && notification.type == "create" && !isCaseDeleted(notifications, notification.caseId)) {
                         var a = $("<a/>", { "class": "pull-right", "href": settings.viewCaseUrl + notification.caseId, text: "View", });
                         li.append(a);
