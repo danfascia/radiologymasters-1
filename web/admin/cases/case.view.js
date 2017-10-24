@@ -33,6 +33,7 @@ require(requiredModules, function(settings, utils, CaseModel, $) {
         
         $("#case-complexity").text(caseInfo.complexity);
         $("#case-views").text(caseInfo.stats.views);
+        $("#case-completed").text(caseInfo.stats.completed);
         
         caseInfoPanel.stopLoading();
     }

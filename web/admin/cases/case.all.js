@@ -36,11 +36,11 @@ require(["settings", "dynatable", "jquery", "loading"], function(settings, dynat
             var complexityColumn = $("<td/>").text(caseInfo.complexity);
             
             var viewCaseLink = $("<a/>", { "class": "action", href: settings.viewCaseUrl + caseInfo.caseId, text: "View" });
+            var updateCaseLink = $("<a/>", { "class": "action", href: settings.updateCaseUrl + caseInfo.caseId, text: "Update" });
             var deleteCaseLink = $("<a/>", { "class": "action", href: settings.deleteCaseUrl + caseInfo.caseId, text: "Delete" });
             
             var actionsColumn = $("<td/>")
-                .append(viewCaseLink)
-                .append(deleteCaseLink);
+                .append(viewCaseLink, updateCaseLink, deleteCaseLink);
             
             columns.push(titleColumn, authorColumn, specialityColumn, complexityColumn, actionsColumn);
             

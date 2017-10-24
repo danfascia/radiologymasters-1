@@ -17,7 +17,7 @@ $.fn.updateStats = function(options) {
         _case = new Case();
         _case.caseId = _settings.caseId;
         _case
-            .loadStats(firebase)
+            .loadStats()
             .then(markCaseAsViewed);
     }
     
@@ -52,14 +52,21 @@ function Case() {
 
     var self = this;
     
-    this.loadStats = function (firebase) {
+    this.loadStats = function () {
         var promise = new Promise(function(resolve, reject) {
-        
+            
+            if (!self.caseId) {
+                throw new Error("The case id must not be null");
+            }
+            
             firebase
                 .database()
                 .ref('/cases/' + self.caseId + "/stats")
                 .once('value')
                 .then(function(caseStats) {
+                    
+                    console.log("Case " + self.caseId + " stats", caseStats.val());
+                    
                     self.stats = caseStats.val();
                 
                     resolve();
@@ -69,7 +76,7 @@ function Case() {
         return promise;
     };
     
-    this.updateStats = function(firebase) {
+    this.updateStats = function() {
 
         var promise = new Promise(function(resolve, reject) {
 
@@ -82,6 +89,9 @@ function Case() {
                 .ref("cases/" + self.caseId + "/stats")
                 .set(self.stats)
                 .then(function() {
+                    
+                    console.log("Case " + self.caseId + " stats have been updated.");
+                    
                     resolve();
                 })
                 .catch(function(error) {

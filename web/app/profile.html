@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <title>Radiology Masters video tutorials for FRCR exam success</title>
+    <meta name="description" content="Radiology video tutorials to accelerate your FRCR exam success">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css"> 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="/app/css/styles.css" rel="stylesheet" media="all">
+</head>
+<body class="single">
+    
+    <header role="banner">
+     <div class="container">
+        <h1 id="logo">
+            <img src="/app/img/logo-48.png">
+            Radiology Masters
+            <span class="strapline">Learn faster</span>
+            </h1>
+            
+            <div id="user-meta" class="user-meta">
+                
+                <div class="authenticated" style="display:none;">
+                    <a href="profile.html" class="profile">{displayName}</a>
+                    <a href="#" class="logout">Logout</a>
+                </div>
+                
+                <div class="unauthenticated">
+                    <a href="/account?type=signin">Login</a> 
+                    <a href="/account?type=signup">Register (free)</a>
+                </div>
+                    
+            </div>  
+     </div>
+    </header>
+
+    <!-- Navigation bar for categories -->
+    <nav role="navigation" class="primary-navigation">
+     <div class="container">
+         <ul>
+             <li><a href="#">Gastrointestinal</a></li>
+             <li><a href="#">Musculoskeletal</a></li>
+             <li><a href="#">Paediatric</a></li>
+             <li><a href="#">Genitourinary</a></li>
+             <li><a href="#">Breast</a></li>
+             <li><a href="#">Chest</a></li>
+             <li><a href="#">Neuro / Head & Neck</a></li>
+             <li><a href="#">Cardiovascular</a></li>
+             <li><a href="#">FRCR tips</a></li>
+         </ul>
+     </div>
+    </nav>
+    <!-- // Navigation bar for categories -->
+
+    <main role="main">
+     <div class="container row">
+        <h3>Account</h3>
+        
+        
+         <div id="profile-container" class="col">
+            
+            <div>
+                <h4>Profile</h4>
+            </div>
+            
+            <div>
+                <h4>Orders</h4>
+            </div>
+            
+        </div>
+        
+         <div id="progress-container" class="col">
+            <h4>Progress</h4>
+            
+            <div id="total-progress" class="circle">
+                <strong></strong>
+            </div>
+        </div>
+        
+     </div>
+    </main>
+
+    <footer role="contentinfo">
+     <div class="container row">
+        <div class="col first">
+            <h4>Heading 4</h4>
+        </div>
+
+        <div class="col">
+            <h4>Heading 4</h4>
+        </div>
+
+        <div class="col last">
+            <h4>Heading 4</h4>
+        </div>
+        
+
+        <small>Copyright &copy; <time datetime="2017">2017</time></small>
+     </div>
+    </footer>
+    
+  	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<script src="/shared/settings.firebase.js"></script>
+	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="/node_modules/jquery-circle-progress/dist/circle-progress.min.js"></script>
+	<script src="js/plugins/display.name/display.name.plugin.js"></script>>
+    <script src="js/auth.js"></script>
+    
+    <script>
+        
+        $("#total-progress")
+            .circleProgress({
+                value: 0.6,
+                lineCap: "round",
+                fill: { color: "#ffa500" }
+            })
+            .on("circle-animation-progress", function(event, progress, stepValue) {
+                console.log(stepValue);
+                
+                $(this).find("strong").text(stepValue.toFixed(2).substr(2) + "%");
+            });
+        
+    </script>
+    
+    <style>
+        
+        .circle {
+            width: 100px;
+            margin: 6px 6px 20px;
+            display: inline-block;
+            position: relative;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .circle strong {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 30px;
+        }
+        
+        #profile-container {
+            width: 60%;
+        }
+        
+        #progress-container {
+            width: 40%;
+        }
+        
+    </style>
+  
+</body>
+</html>

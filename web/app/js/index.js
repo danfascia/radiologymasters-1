@@ -15,7 +15,7 @@ $(function () {
         $(document).trigger("case-completed");
     });
 
-    var caseId = "";
+    var caseId = "607f56b6-68d8-4518-b23f-b91a77ed9b4e";
     var speciality = "Musculoskeletal";
 
     $("#case-video-done").markComplete({ 
@@ -28,7 +28,6 @@ $(function () {
     });
     
     $(".related-cases").updateStats({ 
-        "caseId": caseId,
-        "speciality": speciality
+        "caseId": caseId
     });
 });

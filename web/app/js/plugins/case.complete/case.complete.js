@@ -64,7 +64,7 @@ $.fn.markComplete = function(options) {
             return;
         }
         
-        markCaseAsComplete(_settings.caseId);
+        $(document).trigger("case-completed");
     }
     
     function markCaseAsComplete(caseId) {

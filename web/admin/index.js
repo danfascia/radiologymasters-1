@@ -89,6 +89,10 @@ require(requiredModules, function(firebaseConfig, $, sammy, settings, User) {
           $("#viewport").load("/admin/cases/view.html");
         });
         
+        this.get("#/cases/update/:caseId", function() {
+          $("#viewport").load("/admin/cases/update.html");
+        });
+        
         this.get("#/cases/delete/:caseId", function() {
           $("#viewport").load("/admin/cases/delete.html");
         });
