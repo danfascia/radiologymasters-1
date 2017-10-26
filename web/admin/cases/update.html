@@ -58,6 +58,11 @@
                       <option>Hard</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="case-author">Author</label>
+                    <div id="case-author"></div>
+                </div>
             </div>
 
             <div class="col-md-4">
@@ -125,17 +130,28 @@
                 <span class="error"></span>
             </li>
             
-            <li id="github-write-status" class="">
-                <label>2. Write case information to GitHub</label>
-                <span class="message"></span>
-            </li>
-            
-            <li id="db-write-status" class="">
-                <label>3. Save case information</label>
+            <li id="github-delete-status" class="">
+                <label>2. Delete case information from GitHub</label>
                 <span class="message"></span>
                 <span class="error"></span>
             </li>
             
+            <li id="github-write-status" class="">
+                <label>3. Write case information to GitHub</label>
+                <span class="message"></span>
+            </li>
+            
+            <li id="db-write-status" class="">
+                <label>4. Save case information</label>
+                <span class="message"></span>
+                <span class="error"></span>
+            </li>
+            
+            <li id="vimeo-delete-status" class="">
+                <label>5. Delete video from Vimeo</label>
+                <span class="message"></span>
+                <span class="error"></span>
+            </li>
         </ul>
         
         <div id="case-status-sucess" class="alert alert-success" role="alert">

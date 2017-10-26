@@ -6,6 +6,7 @@ var requiredModules = [
     "utils",
     "CaseModel",
     "CaseMarkdownTemplateModel",
+    "VideoModel",
     "trumbowyg",
     "trumbowygCleanPaste",
     "loading"
@@ -19,76 +20,84 @@ require(requiredModules, function(
     utils,
     CaseModel,
     CaseMarkdownTemplate,
-    MediumEditor,
-    AutoList) {
+    VideoModel) {
    
     var _videoFile = null;
     var _caseId = null;
     var _caseInfo = null;
     var _caseInfoPanel = null;
     var _caseInfoErrorPanel = null;
+    var _hasVideoChanged = false;
+    var _previousVideoId = null;
    
     function handleFileSelected(e) {
         e.stopPropagation();
         e.preventDefault();
-
+        
         var files = e.dataTransfer ? e.dataTransfer.files : $(this).get(0).files;
         _videoFile = files[0];
+        
+        _hasVideoChanged = true;
+        _previousVideoId = _caseInfo.videoId;
         
         $("#video-file-name").text(_videoFile.name);
         $("#video-info").show();
     }
     
     function uploadVideo(videoFile, caseInfo) {
-        
-        // TODO REMOVE WHEN UPLOAD WOKRING AGAIN
-        // var promise1 = new Promise(function(resolve, reject) {
-        //     caseInfo.videoId = "235614049";
-        //     caseInfo.videoUrl = "https://vimeo.com/235614049";
-        //     resolve(caseInfo);
-        // });
-        // return promise1;
-        
+
         var promise = new Promise(function(resolve, reject) {
-            
-            updateUploadProgress(0);
+
+            if (!_hasVideoChanged) {
+                
+                $("#video-upload-status").addClass("success");
+                $("#video-upload-status .message").text("Video has not changed, skipping...");
+                
+                resolve(caseInfo);
+                
+            } else {
+                
+                updateUploadProgress(0);
     
-            var uploader = new VimeoUpload({
-                name: caseInfo.title,
-                description: caseInfo.description,
-                private: false,
-                file: videoFile,
-                token: settings.vimeoAccessToken,
-                upgrade_to_1080: false,
-                onError: function(data) {
-                    console.log("Vimeo Upload return an error", data);
-                    
-                    var error = JSON.parse(data).error;
-                    $("#video-upload-status .error").text("An error occurred while uploading video: " + error);
-                    reject(caseInfo, error);
-                },
-                onProgress: function(data) {
-                    updateUploadProgress(data.loaded / data.total);
-                },
-                onComplete: function(videoId, index) {
-                    var videoUrl = 'https://vimeo.com/' + videoId;
-    
-                    if (index > -1) {
-                        /* The metadata contains all of the uploaded video(s) details see: https://developer.vimeo.com/api/endpoints/videos#/{video_id} */
-                        videoUrl = this.metadata[index].link;
+                var uploader = new VimeoUpload({
+                    name: caseInfo.title,
+                    description: caseInfo.description,
+                    private: false,
+                    file: videoFile,
+                    token: settings.vimeoAccessToken,
+                    upgrade_to_1080: false,
+                    onError: function(data) {
+                        console.log("Vimeo Upload return an error", data);
+                        
+                        var error = JSON.parse(data).error;
+                        $("#video-upload-status .error").text("An error occurred while uploading video: " + error);
+                        reject(caseInfo, error);
+                    },
+                    onProgress: function(data) {
+                        updateUploadProgress(data.loaded / data.total);
+                    },
+                    onComplete: function(videoId, index) {
+                        var videoUrl = 'https://vimeo.com/' + videoId;
+        
+                        if (index > -1) {
+                            /* The metadata contains all of the uploaded video(s) details see: https://developer.vimeo.com/api/endpoints/videos#/{video_id} */
+                            videoUrl = this.metadata[index].link;
+                        }
+                        
+                        $("#video-upload-status").addClass("success");
+                        $("#video-upload-status .message").text("Completed successfully!");
+                        
+                        console.log("Video upload details", videoId, videoUrl);
+                        
+                        caseInfo.videoId = videoId;
+                        caseInfo.videoUrl = videoUrl;
+                        
+                        resolve(caseInfo);
                     }
-                    
-                    $("#video-upload-status").addClass("success");
-                    $("#video-upload-status .message").text("Completed successfully!");
-                    
-                    caseInfo.videoId = videoId;
-                    caseInfo.videoUrl = videoUrl;
-                    
-                    resolve(caseInfo);
-                }
-            });
-            
-            uploader.upload();
+                });
+                
+                uploader.upload();
+            }
         });
         
         return promise;
@@ -132,9 +141,11 @@ require(requiredModules, function(
     
     function writeCaseToDatabase(caseInfo) {
         
+        console.log("Update the case in the database", caseInfo);
+        
         var promise = new Promise(function(resolve, reject) {
             caseInfo
-                .create(firebase)
+                .update(firebase)
                 .then(function () {
                    
                     $("#db-write-status").addClass("success");
@@ -152,7 +163,7 @@ require(requiredModules, function(
         return promise;
     }
     
-    function handleAddCase(form, event) {
+    function handleUpdateCase(form, event) {
         event.preventDefault();
 
         $('#case-info-container').hide();
@@ -160,25 +171,27 @@ require(requiredModules, function(
         
         var user = firebase.auth().currentUser;
         
-        var caseInfo = new CaseModel();
-        caseInfo.caseId =  utils.guid(),
-        caseInfo.title = $("#case-title").val(),
-        caseInfo.description = $("#case-description").val();
-        caseInfo.speciality = $("#case-speciality").val();
-        caseInfo.complexity = $("#case-complexity").val();
-        caseInfo.createdByUserId = user.uid;
-        caseInfo.createdByUserFullName = user.displayName;
+        _caseInfo.title = $("#case-title").val(),
+        _caseInfo.description = $("#case-description").val();
+        _caseInfo.speciality = $("#case-speciality").val();
+        _caseInfo.complexity = $("#case-complexity").val();
+        _caseInfo.updatedByUserId = user.uid;
+        _caseInfo.updatedByUserFullName = user.displayName;
+        _caseInfo.updatedTimestamp = new Date().getTime();
         
-        uploadVideo(_videoFile, caseInfo)
+        uploadVideo(_videoFile, _caseInfo)
+            .then(deleteMarkdownTemplate)
             .then(uploadFileToGithub)
             .then(writeCaseToDatabase)
-            .then(handleCaseCreationSuccess)
+            .then(deleteVideo)
+            .then(handleCaseUpdated)
             .catch(function (caseInfo, error) {
                 console.log("An error occurred while attempting to create the case", error);
+                handleCaseError(error);
             });
     }
     
-    function handleCaseCreationSuccess(caseInfo) {
+    function handleCaseUpdated(caseInfo) {
         
         setTimeout(function () {
             $('#case-status-steps').hide();
@@ -200,13 +213,14 @@ require(requiredModules, function(
             .catch(handleCaseError);
     }
     
-     function handleCaseLoaded() {
+    function handleCaseLoaded() {
         $("#case-title").val(_caseInfo.title);
         $("#case-options-delete").prop("href", settings.deleteCaseUrl + _caseInfo.caseId);
         $('#case-description').trumbowyg("html", _caseInfo.description);
         $("#case-video-embed").prop("src", "https://player.vimeo.com/video/" + _caseInfo.videoId).fadeIn();
         $("#case-speciality").val(_caseInfo.speciality).trigger('change');
         $("#case-complexity").val(_caseInfo.complexity);
+        $("#case-author").text(_caseInfo.createdByUserFullName);
         
         _caseInfoPanel.stopLoading();
     }
@@ -219,12 +233,81 @@ require(requiredModules, function(
         _caseInfoErrorPanel.show();
     }
     
+    function deleteVideo(caseInfo) {
+        
+        console.log("Deleting video with id: " + _previousVideoId);
+        
+        var deleteVideoPromise = new Promise(function(resolve, reject) {
+            
+            if (!_hasVideoChanged) {
+                
+                $("#video-delete-status").addClass("success");
+                $("#video-delete-status .message").text("Video has not changed, skipping...");
+                
+                resolve(caseInfo);
+                
+            } else {
+                
+                var video = new VideoModel(_previousVideoId);
+                video
+                    .delete()
+                    .then(function () {
+                        
+                        $("#vimeo-delete-status").addClass("success");
+                        $("#vimeo-delete-status .message").text("Completed successfully!");
+                        
+                        resolve(caseInfo); 
+                    })
+                    .catch(function (error) {
+                        
+                        $("#vimeo-delete-status .error").text("An error occurred while deleting the previous video: " + error.message);
+                        
+                        reject(error); 
+                    });
+            }
+        });
+        
+        return deleteVideoPromise;
+    }
+    
+    function deleteMarkdownTemplate(caseInfo) {
+        
+        console.log("Deleting markdown template at path: " + caseInfo.markdownTemplatePath);
+        
+        var promise = new Promise(function(resolve, reject) {
+            
+            var markdownTemplate = new CaseMarkdownTemplate();
+            markdownTemplate.caseId = caseInfo.caseId;
+            markdownTemplate.path = caseInfo.markdownTemplatePath;
+            markdownTemplate.SHA = caseInfo.markdownTemplateSHA;
+            
+            markdownTemplate
+                .delete()
+                .then(function () {
+                    
+                    console.log("Markdown template deleted.");
+                    
+                    $("#github-delete-status").addClass("success");
+                    $("#github-delete-status .message").text("Completed successfully!");
+                    
+                    resolve(caseInfo);
+                })
+                .catch(function (error) {
+                    
+                    $("#github-delete-status .error").text("An error occurred while deleting the case template: " + error.message);
+                    
+                    reject(error); 
+                });
+        });
+        
+        return promise;
+    }
+    
     function setup() {
         
         _caseId = utils.getRouteParamValue(window.location.href);
         _caseInfoPanel = $("#case-info-container");
         _caseInfoErrorPanel = $("#case-info-error-container");
-        
         _caseInfoPanel.startLoading();
         
         loadCase();
@@ -246,7 +329,11 @@ require(requiredModules, function(
             rules: {
                 title: "required",
                 description: "required",
-                video: "required"
+                video: {
+                    required: function(element) {
+                        return _hasVideoChanged;
+                    }
+                }
             },
             messages: {
                 title: "Please enter a case title",
@@ -262,7 +349,7 @@ require(requiredModules, function(
                     error.insertAfter(element);
                 }
             },
-            submitHandler: handleAddCase
+            submitHandler: handleUpdateCase
         });
     
         var browse = document.getElementById('browse');

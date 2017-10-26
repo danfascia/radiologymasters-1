@@ -4,13 +4,15 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
         
         function handleCaseNotificationsLoaded(notifications) {
             
+            var sortedNotifications = sortNotifications(notifications);
+            
             var promise = new Promise(function(resolve, reject) {
             
                 var listGroup = $("<ul/>", { "class": "list-unstyled" });
                 
-                for(var i=0; i < notifications.length; i++) {
+                for(var i=0; i < sortedNotifications.length; i++) {
                      
-                    var notification = notifications[i];
+                    var notification = sortedNotifications[i];
                     
                     var li = $("<li/>", {"class": ""});
                     var span = $("<span/>", { text: notification.message });
@@ -22,9 +24,10 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
                         li.append(time);
                     }
                     
-                    console.log("Notification", notification);
-                    
-                    if (notification.type && notification.type == "create" && !isCaseDeleted(notifications, notification.caseId)) {
+                    if (notification.type && 
+                        (notification.type == "create" ||  notification.type == "update") &&
+                        !isCaseDeleted(sortedNotifications, notification.caseId)) {
+                            
                         var a = $("<a/>", { "class": "pull-right", "href": settings.viewCaseUrl + notification.caseId, text: "View", });
                         li.append(a);
                     }
@@ -38,6 +41,14 @@ define("CaseNotificationWidget", ["jquery", "settings", "CaseNotificationModel",
             });
             
             return promise;
+        }
+        
+        function sortNotifications(notifications) {
+            var sortedNotifications = notifications.sort(function(x, y){
+                return x.createdTimestamp - y.createdTimestamp;
+            });
+            
+            return sortedNotifications.reverse();
         }
         
         function isCaseDeleted(notifications, caseId) {

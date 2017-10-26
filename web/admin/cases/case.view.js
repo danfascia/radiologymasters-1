@@ -12,6 +12,7 @@ require(requiredModules, function(settings, utils, CaseModel, $) {
         $("#case-title").text(caseInfo.title);
         $("#case-description").html(caseInfo.description);
         $("#case-options-delete").prop("href", settings.deleteCaseUrl + caseInfo.caseId);
+        $("#case-options-update").prop("href", settings.updateCaseUrl + caseInfo.caseId);
         
         var specialities = $("#case-specialities");
         

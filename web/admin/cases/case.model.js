@@ -15,6 +15,10 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
         this.createdByUserId = null;
         this.createdByUserFullName = "";
         this.createdTimestamp = new Date().getTime();
+        this.updatedByUserId = null;
+        this.updatedByUserFullName = "";
+        this.updatedTimestamp = "";
+        
         this.stats = {
             views: 0,
             completed: 0
@@ -52,9 +56,15 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
                         self.markdownTemplatePath = caseInfo.val().markdownTemplatePath;
                         self.markdownTemplateSHA = caseInfo.val().markdownTemplateSHA;
                         self.markdownTemplateUrl = caseInfo.val().markdownTemplateUrl;
+                        
                         self.createdByUserId = caseInfo.val().createdByUserId;
                         self.createdByUserFullName = caseInfo.val().createdByUserFullName;
                         self.createdTimestamp = new Date(caseInfo.val().createdTimestamp);
+                        
+                        self.updatedByUserId = caseInfo.val().updatedByUserId,
+                        self.updatedByUserFullName = caseInfo.val().updatedByUserFullName,
+                        self.updatedTimestamp = new Date(caseInfo.val().updatedTimestamp);
+                        
                         self.stats = caseInfo.val().stats;
 
                         console.log("Case with id: " + caseId + ", successfully loaded");
@@ -84,6 +94,9 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
                     createdByUserId: self.createdByUserId,
                     createdByUserFullName: self.createdByUserFullName,
                     createdTimestamp: new Date().getTime(),
+                    updatedByUserId: self.updatedByUserId,
+                    updatedByUserFullName: self.updatedByUserFullName,
+                    updatedTimestamp: self.updatedTimestamp,
                     stats: self.stats
                 };
 
@@ -98,6 +111,56 @@ define("CaseModel", ["utils", "CaseNotificationModel"], function(utils, CaseNoti
                         notification.caseTitle = self.title;
                         notification.type = "create";
                         notification.message = "A new case '{title}' was added by {author}".format({ title: self.title, author: self.createdByUserFullName });
+                        notification.createdByUserId = self.createdByUserId;
+                        notification.createdByUserFullName = self.createdByUserFullName;
+
+                        notification
+                            .create(firebase)
+                            .then(resolve);
+                    })
+                    .catch(function(error) {
+                        reject(error);
+                    });
+            });
+
+            return promise;
+        };
+        
+         this.update = function(firebase) {
+
+           var promise = new Promise(function(resolve, reject) {
+
+                var caseInfo = {
+                    caseId: self.caseId,
+                    title: self.title,
+                    description: self.description,
+                    speciality: self.speciality,
+                    complexity: self.complexity,
+                    videoId: self.videoId,
+                    videoUrl: self.videoUrl,
+                    markdownTemplatePath: self.markdownTemplatePath,
+                    markdownTemplateSHA: self.markdownTemplateSHA,
+                    markdownTemplateUrl: self.markdownTemplateUrl,
+                    createdByUserId: self.createdByUserId,
+                    createdByUserFullName: self.createdByUserFullName,
+                    createdTimestamp: self.createdTimestamp,
+                    updatedByUserId: self.updatedByUserId,
+                    updatedByUserFullName: self.updatedByUserFullName,
+                    updatedTimestamp: self.updatedTimestamp,
+                    stats: self.stats
+                };
+
+                firebase
+                    .database()
+                    .ref("cases/" + caseInfo.caseId)
+                    .set(caseInfo)
+                    .then(function() {
+
+                        var notification = new CaseNotification();
+                        notification.caseId = self.caseId;
+                        notification.caseTitle = self.title;
+                        notification.type = "update";
+                        notification.message = "The case '{title}' was updated by {author}".format({ title: self.title, author: self.createdByUserFullName });
                         notification.createdByUserId = self.createdByUserId;
                         notification.createdByUserFullName = self.createdByUserFullName;
 

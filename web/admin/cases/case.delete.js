@@ -15,6 +15,7 @@ require(requiredModules, function($, settings, utils, CaseModel, CaseMarkdownTem
     function handleCaseLoaded() {
         $("#case-title").text(_caseInfo.title);
         $("#case-options-view").prop("href", settings.viewCaseUrl + _caseInfo.caseId);
+        $("#case-options-update").prop("href", settings.updateCaseUrl + _caseInfo.caseId);
         
         deletePanel.stopLoading();
     }
