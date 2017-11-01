@@ -13,7 +13,7 @@ $.fn.markComplete = function(options) {
 
     $(document).on("user-authenticated", handleUserAuthenticated);
     $(document).on("user-unauthenticated", handleUserUnautheticated);
-    $(document).on("case-completed", handleCaseCompleted);
+    $(document).on("case-state-toggle", handleCaseCompleted);
     
     function handleUserAuthenticated(e, user) {
         _user = user;
@@ -26,7 +26,7 @@ $.fn.markComplete = function(options) {
             caseComplete();
         }
         else {
-            caseIncomplete();
+            caseUncomplete();
         }
         
         _self.fadeIn();
@@ -41,36 +41,57 @@ $.fn.markComplete = function(options) {
     }
     
     function caseComplete() {
+        
+        _hasCompletedCase = true;
+        
         _self
             .removeClass(_settings.incompleteClass)
             .addClass(_settings.completeClass)
-            .text(_settings.completeText)
-            .off("click");
+            .text(_settings.completeText);
+            
+        $(document).trigger("case-state-changed");
     }
     
-    function caseIncomplete() {
-        _self.addClass(_settings.incompleteClass);
-        _self.text(_settings.incompleteText);
+    function caseUncomplete() {
+        
+        _hasCompletedCase = false;
+        
+        _self
+            .addClass(_settings.incompleteClass)
+            .text(_settings.incompleteText);
+            
+        $(document).trigger("case-state-changed");
     }
     
-    function handleCaseCompleted(e) {
-        markCaseAsComplete(_settings.caseId);
+    function handleCaseCompleted(e, data) {
+        
+        if (data.caseId != _settings.caseId) {
+            return;
+        }
+        
+        if (!_hasCompletedCase) {
+            
+            console.log("Marking case " + data.caseId + " as complete.");
+            _user
+                .markCaseAsComplete(firebase, data.caseId)
+                .then(caseComplete);
+                
+        } else {
+            
+            console.log("Marking case " + data.caseId + " as uncomplete.");
+            _user
+                .markCaseAsUncomplete(firebase, data.caseId)
+                .then(caseUncomplete);
+        }
     }
     
     function handleMarkAsCompleteClicked(e) {
         e.preventDefault();
         
-         if (!_user) {
+        if (!_user) {
             return;
         }
         
-        $(document).trigger("case-completed");
-    }
-    
-    function markCaseAsComplete(caseId) {
-        console.log("Marking case " + caseId + " as complete.");
-        _user
-            .markCaseAsComplete(firebase, caseId)
-            .then(caseComplete);
+        $(document).trigger("case-state-toggle", { caseId: _settings.caseId });
     }
 };

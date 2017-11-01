@@ -97,6 +97,10 @@ require(requiredModules, function(firebaseConfig, $, sammy, settings, User) {
           $("#viewport").load("/admin/cases/delete.html");
         });
         
+        this.get("#/cases/test", function() {
+          $("#viewport").load("/admin/cases/test.html");
+        });
+        
       });
       
     $(function() {

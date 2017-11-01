@@ -87,6 +87,29 @@ function User() {
         return promise;
     };
     
+    this.markCaseAsUncomplete = function (firebase, caseId) {
+        
+        var promise = new Promise(function(resolve, reject) {
+            var caseIndex = self.completedCases.indexOf(caseId);
+                
+                
+            if (caseIndex == -1) {
+                resolve();
+                return;
+            }
+            
+            self.completedCases.splice(caseIndex, 1);
+            
+            firebase.database()
+                .ref("users/" + self.userId + "/completedCases")
+                .set(self.completedCases)
+                .then(resolve)
+                .catch(reject);
+        });
+        
+        return promise;
+    };
+    
     function toTitleCase(value)
     {
         return value.replace(/\w\S*/g, function(text){
