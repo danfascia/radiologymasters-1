@@ -17,6 +17,7 @@ $.fn.displayProgress = function(options) {
     
     function calculateProgress() {
         loadAllCases()
+            .then(filterCasesBySpeciality)
             .then(displayOverallProgress)
             .catch(handleError);
     }
@@ -33,8 +34,6 @@ $.fn.displayProgress = function(options) {
         }
         
         var isSameSpeciality = caseInfo.speciality.indexOf(speciality) > -1;
-        
-        console.log("CASE '" + caseInfo.caseId + "' IS SAME SPECIALITY: " + isSameSpeciality, caseInfo);
         
         return isSameSpeciality;
     }
@@ -55,14 +54,10 @@ $.fn.displayProgress = function(options) {
             }
         }
         
-        console.log("USER HAS COMPLETED CASE '" + caseId + "': " + hasCompletedCase, user);
-        
         return hasCompletedCase;
     }
     
     function loadAllCases(speciality, user) {
-        
-        console.log("LOADING CASES...", _settings.speciality);
         
         var promise = new Promise(function(resolve, reject) {
 
@@ -79,10 +74,37 @@ $.fn.displayProgress = function(options) {
         return promise;
     }
     
+    function filterCasesBySpeciality(cases) {
+        
+        console.log("CASES", cases);
+        
+        var promise = new Promise(function(resolve, reject) {
+            
+            if (!_settings.speciality) {
+                resolve(cases);
+                return;
+            }
+            
+            var filteredCases = [];
+            
+            for(var key in cases) {
+                var caseInfo = cases[key];
+                
+                if (isCaseSameSpeciality(caseInfo, _settings.speciality)) {
+                    
+                    filteredCases.push(caseInfo);
+                }
+            }
+            
+            resolve(filteredCases);
+        });
+        
+        return promise;
+    }
+    
     function displayOverallProgress(cases) {
         
         var promise = new Promise(function(resolve, reject) {
-            console.log("CASES", cases);
             
             var total = 0;
             var completed = 0;
@@ -97,15 +119,14 @@ $.fn.displayProgress = function(options) {
                 if (hasCompleted) {
                     completed++;
                 }
-                
             }
             
-            var progress = ((completed / total) * 100);
-            console.log("TOTAL", total);
-            console.log("COMPLETED", completed);
-            console.log("PROGRESS", progress);
-            
-            _self.html(progress);
+            if (total > 0) {
+                var progress = ((completed / total) * 100);
+                _self.html(progress);
+            } else {
+                _self.html("0");
+            }
             
             resolve(cases);
         });

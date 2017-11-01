@@ -94,7 +94,7 @@ require(["settings", "jquery", "loading"], function(settings, $) {
         
         this.markCaseAsUncomplete = function (firebase, caseId) {
         
-        var promise = new Promise(function(resolve, reject) {
+            var promise = new Promise(function(resolve, reject) {
             var caseIndex = self.completedCases.indexOf(caseId);
                 
                 
@@ -177,5 +177,9 @@ require(["settings", "jquery", "loading"], function(settings, $) {
         });
         
         $("#overall-progress").displayProgress();
+        
+        $("#musculoskeletal-progress").displayProgress({
+            speciality: "Gastrointestinal"
+        });
     }
 });
