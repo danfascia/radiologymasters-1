@@ -13,7 +13,7 @@ define("settings", function() {
         // The Vimeo access token must have the delete, create and upload scopes.
         vimeoAccessToken: "b45a33ccf5a92da4f05da80e77c531f8",
         
-        gitHubAccessToken: "ecc1a4fb2530daadaf010e0bc8826912373f4b71",
+        gitHubAccessToken: "2bb78101a1a62f30693390fc359b1778d7e33f2f",
         gitHubUsername: "radiologymasters",
         gitHubRepositoryName: "radiologymasters",
         gitHubBranch: "master",
